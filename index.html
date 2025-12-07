@@ -280,12 +280,15 @@
     }
     .skill-card, .project-card {
       background: var(--bg-alt);
-      padding: 2.5rem;
+      padding: 0; /* removed padding here because we handle it inside */
       border-radius: var(--radius);
+      overflow: hidden;
       text-align: center;
       border: 1px solid rgba(255,107,53,0.1);
       transition: var(--transition);
       backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
     }
     .skill-card:hover, .project-card:hover {
       transform: translateY(-15px);
@@ -294,39 +297,44 @@
     }
     .skill-icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 1.5rem; }
 
-    /* Project specific */
+    /* ==== PROJECT THUMBNAIL – FIXED & WIDE ==== */
     .project-thumb {
-      height: 280px;
+      width: 100%;
+      height: 220px; /* you can increase this (240px, 260px…) for even taller images */
       overflow: hidden;
       position: relative;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
     .project-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: top center;
+      /* THIS IS THE ONLY CHANGE YOU NEEDED */
+      object-position: top center !important;
       transition: transform 1s ease;
     }
-    .project-card:hover img { transform: scale(1.15); }
+    .project-card:hover .project-thumb img {
+      transform: scale(1.12);
+    }
 
     .project-info { 
-  padding: 2rem; 
-  flex-grow: 1; 
-  display: flex; 
-  flex-direction: column; 
-}
+      padding: 2rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
     .project-info h3 { font-size: 1.7rem; margin-bottom: 0.8rem; color: #ff8c5a; font-weight: 700; }
     .project-info p { 
-  color: var(--text-light); 
-  margin-bottom: 1.2rem; 
-  flex-grow: 1;  /* Description takes available space */
-}
+      color: var(--text-light); 
+      margin-bottom: 1.2rem; 
+      flex-grow: 1;
+    }
     .tags { 
-  margin: 1.2rem 0; 
-  display: flex; 
-  gap: 0.8rem; 
-  flex-wrap: wrap; 
-}
+      margin: 1.2rem 0; 
+      display: flex; 
+      gap: 0.8rem; 
+      flex-wrap: wrap; 
+    }
     .tag {
       background: rgba(255,107,53,0.2);
       color: #ff8c5a;
@@ -336,29 +344,29 @@
       font-weight: 600;
     }
     .view-project-btn { 
-  margin-top: 1.5rem; 
-  padding-top: 1.5rem; 
-  border-top: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  justify-content: center;
-}
+      margin-top: auto; /* pushes button to bottom */
+      padding-top: 1.5rem; 
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: center;
+    }
     .view-project-btn a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  padding: 0.9rem 2rem;
-  background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
-  border-radius: 50px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: var(--transition);
-  width: fit-content;
-  min-width: 180px;  /* Keeps buttons roughly same size */
-}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      width: fit-content;
+      min-width: 180px;
+    }
     .view-project-btn a:hover {
       background: var(--gradient);
       color: white;
@@ -399,7 +407,6 @@
       justify-content: center;
       font-size: 1.5rem;
       transition: var(--transition);
-    }
     }
     .social-links a:hover {
       background: var(--primary);
@@ -453,7 +460,6 @@
       .hero h1 { font-size: 4.2rem; }
       .about-grid, .contact-grid { grid-template-columns: 1fr; }
       .stats { justify-content: center; }
-      .project-thumb { height: 250px; }
     }
     @media (max-width: 768px) {
       nav { padding: 1.2rem 5%; }
@@ -467,7 +473,6 @@
       .mobile-menu a { font-size: 2.6rem; }
       .btn { padding: 1rem 2.5rem; }
       .stats { gap: 2rem; text-align: center; }
-      .project-thumb { height: 220px; }
     }
     @media (max-width: 480px) {
       .hero h1 { font-size: 3rem; line-height: 1.1; }
@@ -478,7 +483,6 @@
       .btn { width: 90%; max-width: 300px; text-align: center; }
       .section-title { font-size: 2.8rem; }
       .mobile-menu a { font-size: 2.2rem; }
-      .project-thumb { height: 200px; }
     }
   </style>
 </head>
@@ -561,7 +565,7 @@
     </div>
   </section>
 
-    <!-- Projects -->
+  <!-- Projects -->
   <section id="projects">
     <div class="container">
       <h2 class="section-title fade-up">Featured Projects</h2>
@@ -699,7 +703,7 @@
     <p>© 2025 Raktim. All rights reserved. Crafted with <span style="color:#ff6b35;">Love</span> using pure HTML & CSS</p>
   </footer>
 
-  <!-- Lightweight Fade-Up on Scroll (No AOS) -->
+  <!-- Scripts -->
   <script>
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
@@ -720,7 +724,7 @@
       });
     });
 
-    // Mobile menu toggle + staggered animation
+    // Mobile menu toggle
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
@@ -743,7 +747,6 @@
       }
     });
 
-    // Close mobile menu on link click
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
@@ -751,21 +754,16 @@
       });
     });
 
-    // Subtle fade-up animation on scroll
+    // Fade-up on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
         }
       });
-    }, {
-      threshold: 0.1,
-      rootMargin: "0px 0px -80px 0px"
-    });
+    }, { threshold: 0.1, rootMargin: "0px 0px -80px 0px" });
 
-    document.querySelectorAll('.fade-up').forEach(el => {
-      observer.observe(el);
-    });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
