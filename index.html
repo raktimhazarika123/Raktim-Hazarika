@@ -4,16 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Raktim — Premium Web Developer & Template Creator</title>
-
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-
-  <!-- AOS Animation -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+  
   <style>
     :root {
       --bg: #0f0f1a;
@@ -28,7 +23,6 @@
       --radius: 24px;
       --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
@@ -38,6 +32,17 @@
       overflow-x: hidden;
     }
     html { scroll-behavior: smooth; }
+
+    /* Fade-up animation class */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* Navbar */
     nav {
@@ -240,40 +245,40 @@
     }
 
     /* About */
-    .about-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1.6fr; 
-      gap: 5rem; 
-      align-items: center; 
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: center;
     }
     .about-img { border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); }
     .about-img img { width: 100%; object-fit: cover; transition: transform 1s ease; }
     .about-img:hover img { transform: scale(1.1); }
-    .about-content h3 { 
-      font-size: 2.8rem; 
-      margin-bottom: 1.5rem; 
-      background: var(--gradient); 
-      -webkit-background-clip: text; 
-      color: transparent; 
+    .about-content h3 {
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      color: transparent;
     }
     .about-content p { font-size: 1.15rem; color: var(--text-light); margin-bottom: 1.8rem; }
-    .stats { 
-      display: flex; 
-      gap: 3rem; 
-      margin-top: 3rem; 
-      flex-wrap: wrap; 
+    .stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
       justify-content: flex-start;
     }
     .stat-item h4 { font-size: 2.5rem; color: var(--primary); }
     .stat-item p { font-size: 1rem; color: var(--text-light); }
 
-    /* Skills */
-    .skills-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-      gap: 2.5rem; 
+    /* Skills & Projects cards */
+    .skills-grid, .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
     }
-    .skill-card {
+    .skill-card, .project-card {
       background: var(--bg-alt);
       padding: 2.5rem;
       border-radius: var(--radius);
@@ -282,188 +287,154 @@
       transition: var(--transition);
       backdrop-filter: blur(10px);
     }
-    .skill-card:hover { 
-      transform: translateY(-15px); 
-      box-shadow: var(--glow); 
-      border-color: rgba(255,107,53,0.4); 
+    .skill-card:hover, .project-card:hover {
+      transform: translateY(-15px);
+      box-shadow: var(--glow);
+      border-color: rgba(255,107,53,0.4);
     }
     .skill-icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 1.5rem; }
 
-    /* Projects - FIXED: Top navbar always visible */
-    .projects-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-      gap: 2.5rem; 
-    }
-    .project-card {
-      background: var(--bg-alt);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid rgba(255,107,53,0.1);
-      transition: var(--transition);
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .project-card:hover { 
-      transform: translateY(-15px); 
-      box-shadow: var(--glow); 
-      border-color: rgba(255,107,53,0.4); 
-    }
-
-    /* FIXED THUMBNAIL - Top part (navbar) always visible */
-    .project-thumb { 
+    /* Project specific */
+    .project-thumb {
       height: 280px;
       overflow: hidden;
       position: relative;
     }
-    .project-thumb img { 
-      width: 100%; 
-      height: 100%; 
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      object-position: top center;   /* This ensures the top navbar is ALWAYS visible */
-      transition: transform 1s ease; 
+      object-position: top center;
+      transition: transform 1s ease;
     }
-    .project-card:hover img { 
-      transform: scale(1.15); 
-    }
+    .project-card:hover img { transform: scale(1.15); }
 
     .project-info { 
-      padding: 2rem; 
-      flex-grow: 1; 
-      display: flex; 
-      flex-direction: column; 
-    }
-    .project-info h3 { 
-      font-size: 1.7rem; 
-      margin-bottom: 0.8rem; 
-      color: #ff8c5a; 
-      font-weight: 700; 
-    }
+  padding: 2rem; 
+  flex-grow: 1; 
+  display: flex; 
+  flex-direction: column; 
+}
+    .project-info h3 { font-size: 1.7rem; margin-bottom: 0.8rem; color: #ff8c5a; font-weight: 700; }
     .project-info p { 
-      color: var(--text-light); 
-      margin-bottom: 1.2rem; 
-      flex-grow: 1; 
-    }
+  color: var(--text-light); 
+  margin-bottom: 1.2rem; 
+  flex-grow: 1;  /* Description takes available space */
+}
     .tags { 
-      margin: 1.2rem 0; 
-      display: flex; 
-      gap: 0.8rem; 
-      flex-wrap: wrap; 
-    }
-    .tag { 
-      background: rgba(255,107,53,0.2); 
-      color: #ff8c5a; 
-      padding: 0.5rem 1rem; 
-      border-radius: 50px; 
-      font-size: 0.85rem; 
-      font-weight: 600; 
+  margin: 1.2rem 0; 
+  display: flex; 
+  gap: 0.8rem; 
+  flex-wrap: wrap; 
+}
+    .tag {
+      background: rgba(255,107,53,0.2);
+      color: #ff8c5a;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
     .view-project-btn { 
-      margin-top: auto; 
-      padding-top: 1rem; 
-      border-top: 1px solid rgba(255,255,255,0.08); 
-    }
-    .view-project-btn a { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 0.8rem; 
-      padding: 0.9rem 1.5rem; 
-      background: transparent; 
-      color: var(--primary); 
-      border: 2px solid var(--primary); 
-      border-radius: 50px; 
-      font-size: 0.95rem; 
-      font-weight: 600; 
-      text-decoration: none; 
-      transition: var(--transition); 
-      width: 100%; 
-    }
-    .view-project-btn a:hover { 
-      background: var(--gradient); 
-      color: white; 
-      transform: translateY(-3px); 
-      box-shadow: 0 10px 25px rgba(255,107,53,0.3); 
-    }
-    .view-project-btn i { 
-      font-size: 1rem; 
-      transition: transform 0.3s ease; 
-    }
-    .view-project-btn a:hover i { 
-      transform: translateX(5px); 
+  margin-top: 1.5rem; 
+  padding-top: 1.5rem; 
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: center;
+}
+    .view-project-btn a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.9rem 2rem;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  width: fit-content;
+  min-width: 180px;  /* Keeps buttons roughly same size */
+}
+    .view-project-btn a:hover {
+      background: var(--gradient);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,107,53,0.3);
     }
 
     /* Contact */
-    #contact { 
-      background: linear-gradient(135deg, rgba(15,15,26,0.95), rgba(20,20,40,0.98)); 
+    #contact {
+      background: linear-gradient(135deg, rgba(15,15,26,0.95), rgba(20,20,40,0.98));
     }
-    .contact-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 6rem; 
-      align-items: center; 
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
     }
-    .contact-info h3 { 
-      font-size: 2.8rem; 
-      margin-bottom: 2rem; 
-      background: var(--gradient); 
-      -webkit-background-clip: text; 
-      color: transparent; 
+    .contact-info h3 {
+      font-size: 2.8rem;
+      margin-bottom: 2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      color: transparent;
     }
     .contact-info p { font-size: 1.15rem; color: var(--text-light); margin-bottom: 3rem; }
-    .social-links { 
-      display: flex; 
-      gap: 1.5rem; 
-      flex-wrap: wrap; 
-      justify-content: flex-start; 
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
     }
-    .social-links a { 
-      width: 56px; height: 56px; 
-      background: rgba(255,107,53,0.15); 
-      color: var(--primary); 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 1.5rem; 
-      transition: var(--transition); 
+    .social-links a {
+      width: 56px; height: 56px;
+      background: rgba(255,107,53,0.15);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: var(--transition);
     }
-    .social-links a:hover { 
-      background: var(--primary); 
-      color: white; 
-      transform: translateY(-8px); 
     }
-    .contact-form { 
-      background: var(--bg-alt); 
-      padding: 3rem; 
-      border-radius: var(--radius); 
-      border: 1px solid rgba(255,107,53,0.1); 
+    .social-links a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-8px);
+    }
+    .contact-form {
+      background: var(--bg-alt);
+      padding: 3rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,107,53,0.1);
     }
     .form-group { margin-bottom: 1.8rem; }
-    .form-group label { 
-      display: block; 
-      margin-bottom: 0.6rem; 
-      color: var(--text-light); 
-      font-weight: 500; 
+    .form-group label {
+      display: block;
+      margin-bottom: 0.6rem;
+      color: var(--text-light);
+      font-weight: 500;
     }
-    .form-group input, 
-    .form-group textarea { 
-      width: 100%; 
-      padding: 1rem 1.5rem; 
-      background: rgba(255,255,255,0.05); 
-      border: 1px solid rgba(255,107,53,0.2); 
-      border-radius: 12px; 
-      color: white; 
-      font-size: 1rem; 
-      transition: var(--transition); 
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,107,53,0.2);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: var(--transition);
     }
-    .form-group input:focus, 
-    .form-group textarea:focus { 
-      outline: none; 
-      border-color: var(--primary); 
-      box-shadow: 0 0 20px rgba(255,107,53,0.2); 
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(255,107,53,0.2);
     }
     .form-group textarea { min-height: 150px; resize: vertical; }
 
@@ -484,7 +455,6 @@
       .stats { justify-content: center; }
       .project-thumb { height: 250px; }
     }
-
     @media (max-width: 768px) {
       nav { padding: 1.2rem 5%; }
       .hero { padding-top: 120px; }
@@ -499,7 +469,6 @@
       .stats { gap: 2rem; text-align: center; }
       .project-thumb { height: 220px; }
     }
-
     @media (max-width: 480px) {
       .hero h1 { font-size: 3rem; line-height: 1.1; }
       .hero .subtitle { font-size: 1.5rem; }
@@ -509,13 +478,11 @@
       .btn { width: 90%; max-width: 300px; text-align: center; }
       .section-title { font-size: 2.8rem; }
       .mobile-menu a { font-size: 2.2rem; }
-      .stats { gap: 1.5rem; }
       .project-thumb { height: 200px; }
     }
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
   <nav id="navbar">
     <div class="logo">[ R-H ]</div>
@@ -527,7 +494,9 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
   </nav>
 
@@ -543,11 +512,11 @@
   <!-- Hero -->
   <section id="home" class="hero">
     <div class="hero-content">
-      <h1 data-aos="fade-up" data-aos-delay="100">Hi, I’m Raktim Hazarika</h1>
-      <div class="subtitle" data-aos="fade-up" data-aos-delay="300">Premium Web Developer & Template Creator</div>
-      <p data-aos="fade-up" data-aos-delay="500">I craft modern, high-performance websites and premium digital products that stand out and convert.</p>
-      <img src="img/myself.jpg" alt="Raktim" class="profile-img" data-aos="zoom-in" data-aos-delay="700">
-      <div class="btn-group" data-aos="fade-up" data-aos-delay="900">
+      <h1 class="fade-up">Hi, I’m Raktim Hazarika</h1>
+      <div class="subtitle fade-up">Premium Web Developer & Template Creator</div>
+      <p class="fade-up">I craft modern, high-performance websites and premium digital products that stand out and convert.</p>
+      <img src="img/myself.jpg" alt="Raktim" class="profile-img fade-up">
+      <div class="btn-group fade-up">
         <a href="#projects" class="btn btn-primary">View My Work</a>
         <a href="#contact" class="btn btn-outline">Let's Talk</a>
       </div>
@@ -557,20 +526,20 @@
   <!-- About -->
   <section id="about">
     <div class="container">
-      <h2 class="section-title" data-aos="fade-up">About Me</h2>
+      <h2 class="section-title fade-up">About Me</h2>
       <div class="about-grid">
-        <div class="about-img" data-aos="fade-right">
+        <div class="about-img fade-up">
           <img src="img/myself.jpg" alt="Raktim working">
         </div>
         <div class="about-content">
-          <h3 data-aos="fade-up" data-aos-delay="200">Turning Ideas Into Premium Digital Experiences</h3>
-          <p data-aos="fade-up" data-aos-delay="300">I'm a passionate full-stack developer and UI/UX enthusiast with over 6 years of experience crafting high-converting, visually stunning web applications and premium templates.</p>
-          <p data-aos="fade-up" data-aos-delay="400">I specialize in modern frameworks like React, Next.js, and Vue, combined with cutting-edge animations and performance optimization.</p>
-          <p data-aos="fade-up" data-aos-delay="500">My templates have been used by many developers worldwide.</p>
-          <div class="stats" data-aos="fade-up" data-aos-delay="600">
+          <h3 class="fade-up">Turning Ideas Into Premium Digital Experiences</h3>
+          <p class="fade-up">I'm a passionate full-stack developer and UI/UX enthusiast with over 6 years of experience crafting high-converting, visually stunning web applications and premium templates.</p>
+          <p class="fade-up">I specialize in modern frameworks like React, Next.js, and Vue, combined with cutting-edge animations and performance optimization.</p>
+          <p class="fade-up">My templates have been used by many developers worldwide.</p>
+          <div class="stats fade-up">
             <div class="stat-item"><h4>25+</h4><p>Projects Delivered</p></div>
             <div class="stat-item"><h4>100+</h4><p>Happy Customers</p></div>
-            <div class="stat-item"><h4>2+</h4><p>Years Experience</p></div>
+            <div class="stat-item"><h4>6+</h4><p>Years Experience</p></div>
           </div>
         </div>
       </div>
@@ -580,48 +549,24 @@
   <!-- Skills -->
   <section id="skills">
     <div class="container">
-      <h2 class="section-title" data-aos="fade-up">Skills & Expertise</h2>
+      <h2 class="section-title fade-up">Skills & Expertise</h2>
       <div class="skills-grid">
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="skill-icon"><i class="fab fa-react"></i></div>
-          <h3>React & Next.js</h3>
-          <p>Building fast, scalable SPAs and SSR apps</p>
-        </div>
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="skill-icon"><i class="fab fa-js-square"></i></div>
-          <h3>JavaScript / TypeScript</h3>
-          <p>Expert in ES6+, TypeScript, and modern tooling</p>
-        </div>
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="skill-icon"><i class="fab fa-vuejs"></i></div>
-          <h3>Vue & Nuxt</h3>
-          <p>Creating elegant progressive web apps</p>
-        </div>
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
-          <h3>UI/UX Design</h3>
-          <p>Figma, Framer, and design systems</p>
-        </div>
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="skill-icon"><i class="fas fa-bolt"></i></div>
-          <h3>Animations</h3>
-          <p>GSAP, Framer Motion, Three.js</p>
-        </div>
-        <div class="skill-card" data-aos="fade-up" data-aos-delay="600">
-          <div class="skill-icon"><i class="fas fa-server"></i></div>
-          <h3>Backend & APIs</h3>
-          <p>Node.js, Express, Firebase, GraphQL</p>
-        </div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fab fa-react"></i></div><h3>React & Next.js</h3><p>Building fast, scalable SPAs and SSR apps</p></div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fab fa-js-square"></i></div><h3>JavaScript / TypeScript</h3><p>Expert in ES6+, TypeScript, and modern tooling</p></div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fab fa-vuejs"></i></div><h3>Vue & Nuxt</h3><p>Creating elegant progressive web apps</p></div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fas fa-paint-brush"></i></div><h3>UI/UX Design</h3><p>Figma, Framer, and design systems</p></div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fas fa-bolt"></i></div><h3>Animations</h3><p>GSAP, Framer Motion, Three.js</p></div>
+        <div class="skill-card fade-up"><div class="skill-icon"><i class="fas fa-server"></i></div><h3>Backend & APIs</h3><p>Node.js, Express, Firebase, GraphQL</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Projects -->
+    <!-- Projects -->
   <section id="projects">
     <div class="container">
-      <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
+      <h2 class="section-title fade-up">Featured Projects</h2>
       <div class="projects-grid">
-        <div class="project-card" data-aos="flip-left" data-aos-delay="100">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm1.png" alt="Premium Host"></div>
           <div class="project-info">
             <h3>Premium - Host</h3>
@@ -638,11 +583,11 @@
           </div>
         </div>
 
-        <div class="project-card" data-aos="flip-left" data-aos-delay="200">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm2.png" alt="Serenity Yoga"></div>
           <div class="project-info">
             <h3>Serenity - Yoga</h3>
-            <p>High-converting yoga template with smooth animations</p>
+            <p>High-converting yoga template</p>
             <div class="tags">
               <span class="tag">Next.js</span>
               <span class="tag">Framer Motion</span>
@@ -654,11 +599,11 @@
           </div>
         </div>
 
-        <div class="project-card" data-aos="flip-left" data-aos-delay="300">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm3.png" alt="Bright Smile"></div>
           <div class="project-info">
             <h3>Bright - Smile</h3>
-            <p>Modern creative dental landing page with advanced scroll effects</p>
+            <p>Modern creative dental landing page</p>
             <div class="tags">
               <span class="tag">GSAP</span>
               <span class="tag">Three.js</span>
@@ -670,7 +615,7 @@
           </div>
         </div>
 
-        <div class="project-card" data-aos="flip-left" data-aos-delay="400">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm4.png" alt="Iron House"></div>
           <div class="project-info">
             <h3>Iron - House</h3>
@@ -686,10 +631,10 @@
           </div>
         </div>
 
-        <div class="project-card" data-aos="flip-left" data-aos-delay="500">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm5.png" alt="Harrison & Associates"></div>
           <div class="project-info">
-            <h3>Harrison & Associates</h3>
+            <h3>H & Associates</h3>
             <p>Professional lawyer's portfolio landing page</p>
             <div class="tags">
               <span class="tag">Vue.js</span>
@@ -702,7 +647,7 @@
           </div>
         </div>
 
-        <div class="project-card" data-aos="flip-left" data-aos-delay="600">
+        <div class="project-card fade-up">
           <div class="project-thumb"><img src="img/cm6.png" alt="Aura Models"></div>
           <div class="project-info">
             <h3>Aura - Models</h3>
@@ -724,9 +669,9 @@
   <!-- Contact -->
   <section id="contact">
     <div class="container">
-      <h2 class="section-title" data-aos="fade-up">Get In Touch</h2>
+      <h2 class="section-title fade-up">Get In Touch</h2>
       <div class="contact-grid">
-        <div class="contact-info" data-aos="fade-right">
+        <div class="contact-info fade-up">
           <h3>Let's Build Something Amazing Together</h3>
           <p>Have a project in mind? Want a custom template or full-stack solution? I'm always excited to work on new challenges.</p>
           <p>Drop me a message and let's create something premium.</p>
@@ -737,7 +682,7 @@
             <a href="#"><i class="fab fa-dribbble"></i></a>
           </div>
         </div>
-        <div class="contact-form" data-aos="fade-left">
+        <div class="contact-form fade-up">
           <form>
             <div class="form-group"><label>Your Name</label><input type="text" required></div>
             <div class="form-group"><label>Email Address</label><input type="email" required></div>
@@ -750,20 +695,12 @@
   </section>
 
   <!-- Footer -->
-  <footer data-aos="fade-up">
+  <footer class="fade-up">
     <p>© 2025 Raktim. All rights reserved. Crafted with <span style="color:#ff6b35;">Love</span> using pure HTML & CSS</p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Lightweight Fade-Up on Scroll (No AOS) -->
   <script>
-    AOS.init({
-      duration: 1200,
-      easing: 'ease-out-cubic',
-      once: true,
-      offset: 100
-    });
-
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
@@ -783,21 +720,51 @@
       });
     });
 
-    // Mobile menu toggle
+    // Mobile menu toggle + staggered animation
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('active');
       mobileMenu.classList.toggle('active');
+
+      if (mobileMenu.classList.contains('active')) {
+        document.querySelectorAll('.mobile-menu a').forEach((link, i) => {
+          link.style.transitionDelay = `${i * 0.1 + 0.3}s`;
+          link.style.opacity = '1';
+          link.style.transform = 'translateY(0)';
+        });
+      } else {
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+          link.style.transitionDelay = '0s';
+          link.style.opacity = '0';
+          link.style.transform = 'translateY(60px)';
+        });
+      }
     });
 
-    // Close menu on link click
+    // Close mobile menu on link click
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
         mobileMenu.classList.remove('active');
       });
+    });
+
+    // Subtle fade-up animation on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: "0px 0px -80px 0px"
+    });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      observer.observe(el);
     });
   </script>
 </body>
